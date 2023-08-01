@@ -34,7 +34,7 @@ public class CalciteJdbcExample {
 
     private static DataSource mysqlDataSource;
 
-    private static final Props DB_PROPS = new Props("db_dev.properties");
+    private static final Props DB_PROPS = new Props("db.properties");
 
 
     private static void init() {
