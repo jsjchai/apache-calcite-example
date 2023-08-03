@@ -6,6 +6,7 @@ import org.apache.calcite.adapter.jdbc.JdbcSchema;
 import org.apache.calcite.interpreter.Bindables;
 import org.apache.calcite.jdbc.CalciteConnection;
 import org.apache.calcite.plan.RelOptTable;
+import org.apache.calcite.plan.RelOptUtil;
 import org.apache.calcite.plan.hep.HepPlanner;
 import org.apache.calcite.plan.hep.HepProgram;
 import org.apache.calcite.rel.RelHomogeneousShuttle;
@@ -105,6 +106,8 @@ public class CalciteJdbcExample {
                         rb.field("col2")
                 )
                 .build();
+
+        System.out.println(RelOptUtil.toString(node));
 
 
         HepProgram program = HepProgram.builder().build();

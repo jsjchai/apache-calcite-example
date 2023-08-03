@@ -7,6 +7,7 @@ import cn.hutool.db.handler.RsHandler;
 import cn.hutool.db.sql.SqlExecutor;
 import org.apache.calcite.adapter.jdbc.JdbcSchema;
 import org.apache.calcite.jdbc.CalciteConnection;
+import org.apache.calcite.plan.RelOptUtil;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.schema.SchemaPlus;
 import org.apache.calcite.tools.FrameworkConfig;
@@ -83,6 +84,8 @@ class CalciteTests {
                         r.field("EXAMPLEBAR")
                 )
                 .build();
+
+        System.out.println(RelOptUtil.toString(node));
 
         RelRunner runner = connection.unwrap(RelRunner.class);
         PreparedStatement ps = runner.prepareStatement(node);
