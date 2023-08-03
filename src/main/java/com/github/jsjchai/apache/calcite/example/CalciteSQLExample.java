@@ -53,7 +53,7 @@ public class CalciteSQLExample {
     }
 
     private static DataSource postgresqlDataSource() throws ClassNotFoundException {
-        return JdbcSchema.dataSource("jdbc:postgresql://127.0.0.1:5432/lyra_his","org.postgresql.Driver","test","test");
+        return JdbcSchema.dataSource("jdbc:postgresql://127.0.0.1:5432/pg","org.postgresql.Driver","test","test");
     }
 
 
