@@ -1,67 +1,75 @@
 package com.github.jsjchai.apache.calcite.example;
 
+import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.db.Entity;
+import com.github.jsjchai.apache.calcite.example.config.JdbcConfig;
+import com.github.jsjchai.apache.calcite.example.util.ResultSetUtil;
 import org.apache.calcite.adapter.jdbc.JdbcSchema;
 import org.apache.calcite.jdbc.CalciteConnection;
 import org.apache.calcite.schema.Schema;
 import org.apache.calcite.schema.SchemaPlus;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class CalciteSQLExample {
 
-    private static final String SQL = "";
-    public static void main(String[] args) throws Exception {
+    private static final Logger LOGGER = Logger.getLogger(CalciteSQLExample.class.getName());
 
+    private static String sql;
+
+    private static String oracleSchema;
+    private static String postgresqlSchema;
+
+
+    public static void main(String[] args) throws Exception {
+        StopWatch watch = new StopWatch();
+        watch.start("总耗时");
+        init();
         Class.forName("org.apache.calcite.jdbc.Driver");
         Properties info = new Properties();
         info.setProperty("lex", "JAVA");
-        Connection connection =
-                DriverManager.getConnection("jdbc:calcite:", info);
-        CalciteConnection calciteConnection =
-                connection.unwrap(CalciteConnection.class);
+        Connection connection = DriverManager.getConnection("jdbc:calcite:", info);
+        CalciteConnection calciteConnection = connection.unwrap(CalciteConnection.class);
         SchemaPlus rootSchema = calciteConnection.getRootSchema();
-        Schema messageSchema = JdbcSchema.create(rootSchema, "pg", postgresqlDataSource(), null, "pg");
-        Schema yhSchema = JdbcSchema.create(rootSchema, "oracle", oracleDataSource(), null, "oracle");
-        rootSchema.add("pg", messageSchema);
-        rootSchema.add("oracle", yhSchema);
+        Schema messageSchema = JdbcSchema.create(rootSchema, postgresqlSchema, JdbcConfig.postgresqlDataSource(), null, postgresqlSchema);
+        Schema yhSchema = JdbcSchema.create(rootSchema, oracleSchema, JdbcConfig.oracleDataSource(), null, oracleSchema);
+        rootSchema.add(postgresqlSchema, messageSchema);
+        rootSchema.add(oracleSchema, yhSchema);
 
+        StopWatch sqlWatch = new StopWatch();
+        sqlWatch.start("执行sql");
 
         Statement statement = calciteConnection.createStatement();
-        ResultSet resultSet = statement.executeQuery(SQL);
+        ResultSet resultSet = statement.executeQuery(sql);
 
-       while (resultSet.next()){
-           Map<String,Object> map =  new HashMap<>();
-           map.put("yonghuxm",resultSet.getString("yonghuxm"));
-           map.put("lianxidh",resultSet.getString("lianxidh"));
-           map.put("id",resultSet.getString("id"));
+        List<Entity> data = ResultSetUtil.toEntityList(resultSet);
 
-           System.out.println(map);
-
-       }
+        data.forEach(e -> LOGGER.info(e.toString()));
 
         resultSet.close();
         statement.close();
         connection.close();
 
+        watch.stop();
+        sqlWatch.stop();
+        LOGGER.info( watch.prettyPrint(TimeUnit.SECONDS));
+        LOGGER.info( sqlWatch.prettyPrint(TimeUnit.SECONDS));
+
     }
 
-    private static DataSource postgresqlDataSource() throws ClassNotFoundException {
-        return JdbcSchema.dataSource("jdbc:postgresql://127.0.0.1:5432/pg","org.postgresql.Driver","test","test");
+    private static void init() {
+        sql = FileUtil.readUtf8String("sql/postgresqljoinOracle.sql");
+        oracleSchema = JdbcConfig.getOracleSchema();
+        postgresqlSchema = JdbcConfig.getPostgresqlSchema();
     }
-
-
-    private static DataSource oracleDataSource() throws ClassNotFoundException {
-        return JdbcSchema.dataSource("jdbc:oracle:thin:@127.0.0.1:1521:orcl","oracle.jdbc.OracleDriver","test","test");
-    }
-
-
 
 
 }
