@@ -1,4 +1,4 @@
-package com.github.jsjchai.apache.calcite.example;
+package com.github.jsjchai.apache.calcite.example.main;
 
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.io.FileUtil;
@@ -19,6 +19,9 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+/**
+ * sql oracle join postgresql
+ */
 public class CalciteSQLExample {
 
     private static final Logger LOGGER = Logger.getLogger(CalciteSQLExample.class.getName());

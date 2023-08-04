@@ -1,4 +1,4 @@
-package com.github.jsjchai.apache.calcite.example;
+package com.github.jsjchai.apache.calcite.example.main;
 
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.db.DbUtil;
@@ -33,6 +33,9 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+/**
+ *  RelBuilder拼接sql oracle join postgresql
+ */
 public class CalciteJdbcExample {
 
     private static final Logger LOGGER = Logger.getLogger(CalciteJdbcExample.class.getName());
@@ -52,9 +55,7 @@ public class CalciteJdbcExample {
     public static void main(String[] args) throws Exception {
         StopWatch watch = new StopWatch();
         watch.start("总耗时");
-
         init();
-
 
         //设置连接参数
         Properties info = new Properties();
