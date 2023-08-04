@@ -60,8 +60,9 @@ public class CalciteSQLExample {
 
         watch.stop();
         sqlWatch.stop();
-        LOGGER.info( watch.prettyPrint(TimeUnit.SECONDS));
-        LOGGER.info( sqlWatch.prettyPrint(TimeUnit.SECONDS));
+        LOGGER.info("总数量：" + data.size());
+        LOGGER.info(watch.prettyPrint(TimeUnit.SECONDS));
+        LOGGER.info(sqlWatch.prettyPrint(TimeUnit.SECONDS));
 
     }
 
