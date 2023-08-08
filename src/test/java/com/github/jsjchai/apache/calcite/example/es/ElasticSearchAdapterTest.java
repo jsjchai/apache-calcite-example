@@ -158,9 +158,10 @@ class ElasticSearchAdapterTest {
 
         List<Entity> data = ResultSetUtil.toEntityList(resultSet);
 
-        assertNotNull(data);
         DbUtil.close(statement);
         DbUtil.close(connection);
+
+        assertNotNull(data);
     }
 
 

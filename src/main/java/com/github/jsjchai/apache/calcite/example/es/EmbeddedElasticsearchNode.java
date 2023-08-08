@@ -37,7 +37,6 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import static java.util.Collections.emptyMap;
 
@@ -48,8 +47,6 @@ import static java.util.Collections.emptyMap;
  */
 
 class EmbeddedElasticsearchNode implements AutoCloseable {
-
-    private static final Logger LOGGER = Logger.getLogger(EmbeddedElasticsearchNode.class.getName());
 
     private final Node node;
     private volatile boolean isStarted;
@@ -89,7 +86,7 @@ class EmbeddedElasticsearchNode implements AutoCloseable {
             home = Files.createTempDirectory("es-home").toFile();
             home.deleteOnExit();
         } catch (IOException e) {
-            LOGGER.info(e.getMessage());
+           e.printStackTrace();
             throw new RuntimeException("IOException");
         }
 
@@ -116,7 +113,7 @@ class EmbeddedElasticsearchNode implements AutoCloseable {
             node.start();
             this.isStarted = true;
         } catch (NodeValidationException e) {
-            LOGGER.info(e.getMessage());
+           e.printStackTrace();
         }
     }
 
