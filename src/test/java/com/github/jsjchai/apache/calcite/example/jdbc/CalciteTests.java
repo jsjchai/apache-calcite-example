@@ -1,4 +1,4 @@
-package com.github.jsjchai.apache.calcite.example;
+package com.github.jsjchai.apache.calcite.example.jdbc;
 
 import cn.hutool.db.DbUtil;
 import cn.hutool.db.Entity;

@@ -20,8 +20,14 @@ allprojects {
 }
 
 dependencies {
+
+    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.10.2'
+    implementation 'org.elasticsearch.plugin:transport-netty4-client:7.10.2'
+    implementation 'org.codelibs.elasticsearch.module:lang-painless:7.10.2'
+
     implementation 'org.apache.calcite:calcite-core:1.35.0'
     implementation 'org.apache.calcite.avatica:avatica-core:1.23.0'
+    implementation 'org.apache.calcite:calcite-elasticsearch:1.35.0'
     implementation 'com.google.guava:guava:32.1.1-jre'
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'com.mysql:mysql-connector-j:8.1.0'
